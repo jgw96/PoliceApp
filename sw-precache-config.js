@@ -17,4 +17,12 @@ module.exports = {
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
   ],
   navigateFallback: 'index.html',
+  runtimeCaching: [{
+    urlPattern: /^https:\/\/thecountedapi\.com\/api/,
+    handler: 'fastest'
+  },
+  {
+    urlPattern: /^https:\/\/fonts.googleapis\.com/,
+    handler: 'cacheFirst'
+  }]
 };

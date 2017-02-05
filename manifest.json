@@ -1,14 +1,14 @@
 {
-  "name": "My App",
-  "short_name": "My App",
+  "name": "Police Shootings",
+  "short_name": "Shootings",
   "start_url": "/?homescreen=1",
   "display": "standalone",
-  "theme_color": "#3f51b5",
-  "background_color": "#3f51b5",
+  "theme_color": "black",
+  "background_color": "black",
   "icons": [
     {
-      "src": "images/manifest/icon-192x192.png",
-      "sizes": "192x192",
+      "src": "images/manifest/icon-256x256.png",
+      "sizes": "256x256",
       "type": "image/png"
     },
     {
