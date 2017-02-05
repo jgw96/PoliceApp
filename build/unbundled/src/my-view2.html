@@ -1,0 +1,140 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+</head><body><dom-module id="my-view2">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      paper-progress {
+        width: 100%;
+      }
+
+      paper-card {
+        background: white;
+        margin-bottom: 16px;
+        width: 100%;
+      }
+    </style>
+
+    <template is="dom-if" if="[[loading]]">
+      <paper-progress indeterminate="" class="blue"></paper-progress>
+    </template>
+
+    <paper-dropdown-menu required="" label="State">
+      <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selection}}">
+        <paper-item value="AL">Alabama</paper-item>
+        <paper-item value="AK">Alaska</paper-item>
+        <paper-item value="AZ">Arizona</paper-item>
+        <paper-item value="AR">Arkansas</paper-item>
+        <paper-item value="CA">California</paper-item>
+        <paper-item value="CO">Colorado</paper-item>
+        <paper-item value="CT">Connecticut</paper-item>
+        <paper-item value="DE">Delaware</paper-item>
+        <paper-item value="FL">Florida</paper-item>
+        <paper-item value="GA">Georgia</paper-item>
+        <paper-item value="HI">Hawaii</paper-item>
+        <paper-item value="ID">Idaho</paper-item>
+        <paper-item value="IL">Illinois</paper-item>
+        <paper-item value="IN">Indiana</paper-item>
+        <paper-item value="IA">Iowa</paper-item>
+        <paper-item value="KS">Kansas</paper-item>
+        <paper-item value="KY">Kentucky</paper-item>
+        <paper-item value="LA">Lousiana</paper-item>
+        <paper-item value="ME">Maine</paper-item>
+        <paper-item value="MD">Maryland</paper-item>
+        <paper-item value="MA">Massachusets</paper-item>
+        <paper-item value="MI">Michigan</paper-item>
+        <paper-item value="MN">Minnesota</paper-item>
+        <paper-item value="MS">Mississippi</paper-item>
+        <paper-item value="MO">Missouri</paper-item>
+        <paper-item value="MT">Montana</paper-item>
+        <paper-item value="NE">Nebraska</paper-item>
+        <paper-item value="NV">Nevada</paper-item>
+        <paper-item value="NH">New Hampshire</paper-item>
+        <paper-item value="NJ">New Jersey</paper-item>
+        <paper-item value="NM">New Mexico</paper-item>
+        <paper-item value="NY">New York</paper-item>
+        <paper-item value="NC">North Carolina</paper-item>
+        <paper-item value="ND">North Dakota</paper-item>
+        <paper-item value="OH">Ohio</paper-item>
+        <paper-item value="OK">Oklahoma</paper-item>
+        <paper-item value="OR">Oregon</paper-item>
+        <paper-item value="PA">Pennsylvania</paper-item>
+        <paper-item value="RI">Rhode Island</paper-item>
+        <paper-item value="SC">South Carolina</paper-item>
+        <paper-item value="SD">South Dakota</paper-item>
+        <paper-item value="TN">Tennessee</paper-item>
+        <paper-item value="TX">Texas</paper-item>
+        <paper-item value="UT">Utah</paper-item>
+        <paper-item value="VT">Vermont</paper-item>
+        <paper-item value="VA">Virginia</paper-item>
+        <paper-item value="WA">Washington</paper-item>
+        <paper-item value="WV">West Virginia</paper-item>
+        <paper-item value="WI">Wisconsin</paper-item>
+        <paper-item value="WY">Wyoming</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu required="" label="Race">
+      <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{raceSelection}}">
+        <paper-item value="black">Black</paper-item>
+        <paper-item value="hispanic/latino">Hispanic/Latino</paper-item>
+        <paper-item value="white">White</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu required="" label="Armed">
+      <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{armedSelection}}">
+        <paper-item value="no">No</paper-item>
+        <paper-item value="firearm">Firearm</paper-item>
+        <paper-item value="knife">Knife</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <iron-list items="[[people]]" as="person">
+      <template>
+        <div>
+          <paper-card heading="[[person.name]]">
+            <div class="card-content">
+              <div>Age: [[person.age]]</div>
+              <div>Sex: [[person.sex]]</div>
+              <div>Race: [[person.race]]</div>
+              <div>
+                Date: <span>[[person.month]]</span>
+                <span>[[person.day]]</span>,
+                <span>[[person.year]]</span>
+              </div>
+              <div>Address: <span>[[person.address]]</span>,
+                <span>[[person.city]]</span>
+                <span>[[person.state]]</span>
+              </div>
+              <div>Cause of death: [[person.cause]]</div>
+              <div>Police Department: [[person.dept]]</div>
+              <div>Armed: [[person.armed]]</div>
+            </div>
+          </paper-card>
+        </div>
+      </template>
+    </iron-list>
+
+    <paper-toast text="[[people.length]] people killed" opened="{{done}}"></paper-toast>
+
+    <iron-ajax auto="" url="https://thecountedapi.com/api/counted/?state=[[selection]]&amp;race=[[raceSelection]]&amp;armed=[[armedSelection]]" handle-as="json" last-response="{{people}}" loading="{{loading}}" on-response="handleResponse"></iron-ajax>
+  </template>
+
+  <script>Polymer({is:"my-view2",properties:{done:{type:Boolean,value:!1},selection:{type:String,value:"GA"},raceSelection:{type:String,value:"black"},armedSelection:{type:String,value:"no"}},handleResponse:function(){this.people.length>0&&(this.done=!0)}});</script>
+</dom-module>
+</body></html>

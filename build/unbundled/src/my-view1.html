@@ -1,0 +1,64 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      paper-card {
+        background: white;
+        margin-bottom: 16px;
+        width: 100%;
+      }
+
+      paper-progress {
+        width: 100%;
+      }
+    </style>
+
+<template is="dom-if" if="[[loading]]">
+  <paper-progress indeterminate="" class="blue"></paper-progress>
+</template>
+
+<iron-ajax auto="" url="https://thecountedapi.com/api/counted" handle-as="json" last-response="{{people}}" loading="{{loading}}" on-response="handleResponse"></iron-ajax>
+<iron-list items="[[people]]" as="person">
+  <template>
+    <div>
+      <paper-card heading="[[person.name]]">
+        <div class="card-content">
+          <div>Age: [[person.age]]</div>
+          <div>Sex: [[person.sex]]</div>
+          <div>Race: [[person.race]]</div>
+          <div>
+            Date: <span>[[person.month]]</span>
+            <span>[[person.day]]</span>,
+            <span>[[person.year]]</span>
+          </div>
+          <div>Address: <span>[[person.address]]</span>,
+            <span>[[person.city]]</span>
+            <span>[[person.state]]</span>
+          </div>
+          <div>Cause of death: [[person.cause]]</div>
+          <div>Police Department: [[person.dept]]</div>
+          <div>Armed: [[person.armed]]</div>
+        </div>
+      </paper-card>
+    </div>
+  </template>
+</iron-list>
+
+<paper-toast text="[[people.length]] people killed" opened="{{done}}"></paper-toast>
+</template>
+
+<script>Polymer({is:"my-view1",properties:{done:{type:Boolean,value:!1}},handleResponse:function(){this.done=!0}});</script>
+</dom-module></body></html>
