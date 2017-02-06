@@ -1,0 +1,76 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<dom-module id="my-detail-view">
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 16px;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+
+      paper-progress {
+        width: 100%;
+      }
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+    <template is="dom-if" if="[[loading]]">
+      <paper-progress indeterminate class="blue"></paper-progress>
+    </template>
+
+    <iron-ajax auto url="https://thecountedapi.com/api/counted/?name=[[subroute.__queryParams.person]]" handle-as="json" last-response="{{people}}"
+      loading="{{loading}}" on-response="handleResponse"></iron-ajax>
+
+      <template is="dom-if" if="[[done]]">
+        <paper-card heading=[[person.name]]>
+          <div class="card-content">
+            <div>Sex: [[person.sex]]</div>
+            <div>Race: [[person.race]]</div>
+            <div>
+              Date: <span>[[person.month]]</span>
+              <span>[[person.day]]</span>,
+              <span>[[person.year]]</span>
+            </div>
+            <div>State: [[person.state]]</div>
+            <div>Cause of death: [[person.cause]]</div>
+            <div>Police Department: [[person.dept]]</div>
+            <div>Armed: [[person.armed]]</div>
+          </div>
+        </paper-card>
+      </template>
+
+  </template>
+  <!-- Creates the element's prototype and registers it -->
+  <script>
+    Polymer({
+      is: 'my-detail-view',
+      properties: {
+        done: {
+          type: Boolean,
+          value: false
+        },
+        person: {
+          type: Object,
+          value: null
+        }
+      },
+      handleResponse: function()  {
+        console.log(this.people);
+        this.person = this.people[0];
+        this.done = true;
+      }
+    });
+  </script>
+</dom-module>

@@ -19,7 +19,7 @@ module.exports = {
   navigateFallback: 'index.html',
   runtimeCaching: [{
     urlPattern: /^https:\/\/thecountedapi\.com\/api/,
-    handler: 'fastest'
+    handler: 'cacheFirst'
   },
   {
     urlPattern: /^https:\/\/fonts.googleapis\.com/,
